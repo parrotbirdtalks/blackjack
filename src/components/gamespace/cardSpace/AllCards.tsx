@@ -16,9 +16,7 @@ const allValues: string[] = [
   "K",
 ];
 const allSuits: string[] = ["♠", "♥", "♣", "♦"];
-
 let AllCards: GameCard[] = [];
-
 for (let value in allValues) {
   for (let suit in allSuits) {
     let color: string;

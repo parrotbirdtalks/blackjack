@@ -1,6 +1,6 @@
 import classes from "./PlayerSpace.module.css";
 import Avatar from "../Avatar";
-import entityInfo from "../EntityInfo";
+import EntityInfo from "../EntityInfo";
 import GameCard from "../cardSpace/GameCard";
 import DisplayCard from "../cardSpace/DisplayCard";
 import SumOfCards from "../interactive/logic/SumOfCards";
@@ -13,7 +13,7 @@ const PlayerSpace = (props: dealCardProps): JSX.Element => {
   let sum: number = SumOfCards(props.dealCard);
 
   //player display information
-  let player: entityInfo = {
+  let player: EntityInfo = {
     isDealer: false,
     image: "zebra",
     totalSum: sum,

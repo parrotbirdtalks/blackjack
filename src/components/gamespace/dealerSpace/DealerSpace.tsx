@@ -1,6 +1,6 @@
 import classes from "./DealerSpace.module.css";
 import Avatar from "../Avatar";
-import entityInfo from "../EntityInfo";
+import EntityInfo from "../EntityInfo";
 import GameCard from "../cardSpace/GameCard";
 import DisplayCard from "../cardSpace/DisplayCard";
 import SumOfCards from "../interactive/logic/SumOfCards";
@@ -20,7 +20,7 @@ const DealerSpace = (props: dealCardProps): JSX.Element => {
   }
 
   //dealer display information
-  let dealer: entityInfo = {
+  let dealer: EntityInfo = {
     isDealer: true,
     image: "chicken",
     totalSum: sum,

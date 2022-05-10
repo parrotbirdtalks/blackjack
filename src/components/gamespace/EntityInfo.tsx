@@ -1,7 +1,7 @@
-interface entityInfo {
+interface EntityInfo {
   isDealer: boolean;
   image: string;
   totalSum: number | string;
-};
+}
 
-export default entityInfo;
+export default EntityInfo;

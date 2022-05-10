@@ -1,8 +1,8 @@
 import classes from "./Avatar.module.css";
-import entityInfo from "./EntityInfo";
+import EntityInfo from "./EntityInfo";
 
 interface EntityProps {
-  displayInfo: entityInfo;
+  displayInfo: EntityInfo;
 }
 
 const Avatar = (props: EntityProps): JSX.Element => {
