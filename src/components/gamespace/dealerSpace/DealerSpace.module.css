@@ -1,0 +1,10 @@
+.dealerspace {
+  display: grid;
+  grid-template-columns: 30px 1fr 100px 30px;
+}
+
+.displaycard {
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+}

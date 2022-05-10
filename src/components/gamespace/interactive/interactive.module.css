@@ -1,0 +1,40 @@
+.interactive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  display: inline-block;
+  background-color: lightgray;
+  padding: 5px 5px;
+  margin: 10px 10px;
+  width: 120px;
+}
+
+button:hover {
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.button34 {
+  display: inline-block;
+  margin: 10px 10px;
+  background: #ecb836;
+  border-radius: 999px;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 5px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}

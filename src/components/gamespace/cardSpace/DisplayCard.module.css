@@ -1,0 +1,40 @@
+.color_black {
+  color: black;
+}
+
+.color_red {
+  color: red;
+}
+
+.card {
+  margin: 25px 5px;
+  height: 85px;
+  width: 50px;
+  border-radius: 5%;
+  background-color: azure;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  text-shadow: none;
+}
+
+.back {
+  margin: 25px 5px;
+  height: 85px;
+  width: 50px;
+  border-radius: 5%;
+  background-image: url('../../../assets/cardBack.png');
+  background-size: 100% 100%;
+  background-position: center
+}
+
+.cardNumber {
+  font-size: 22px;
+  padding-top: 10px;
+  background: none;
+}
+
+.cardSymbol {
+  font-size: 25px;
+  padding-bottom: 10px;
+  background: none;
+}

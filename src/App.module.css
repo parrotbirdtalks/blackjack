@@ -1,0 +1,15 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  background-color: forestgreen;
+}
+
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 550px 3fr;
+}
+
+/* .container div {
+  border: 1px solid black;
+} */

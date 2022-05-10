@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "src/customTypings",
+      "node_modules/@types"
+    ],
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,7 +25,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "./react-app-env.d.ts"]
 }
