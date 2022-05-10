@@ -9,7 +9,7 @@ interface CardProps {
   isDealersTurn?: boolean;
 }
 
-const DisplayCard = (props: CardProps) => {
+const DisplayCard = (props: CardProps):JSX.Element => {
   const [timeToFlip, setTimetoFlip] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {

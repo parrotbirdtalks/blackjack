@@ -9,7 +9,7 @@ interface dealCardProps {
   dealCard: GameCard[];
 }
 
-const PlayerSpace = (props:dealCardProps) => {
+const PlayerSpace = (props: dealCardProps): JSX.Element => {
   let sum: number = SumOfCards(props.dealCard);
 
   //player display information

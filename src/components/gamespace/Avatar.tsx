@@ -5,7 +5,7 @@ interface EntityProps {
   displayInfo: entityInfo;
 }
 
-const Avatar = (props:EntityProps) => {
+const Avatar = (props: EntityProps): JSX.Element => {
   return (
     <div className={classes.avatar}>
       {props.displayInfo.image === "zebra" ? (

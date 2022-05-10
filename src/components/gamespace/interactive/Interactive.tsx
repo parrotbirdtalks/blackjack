@@ -12,7 +12,7 @@ interface interactiveProps {
   onReset: () => void;
 }
 
-const Interactive = (props: interactiveProps) => {
+const Interactive = (props: interactiveProps): JSX.Element => {
   //to remove button after clicked to prevent spamming
   const [isDisabled, setIsDisabled] = useState(false);
   const disableTime: number = 1000;
@@ -35,7 +35,7 @@ const Interactive = (props: interactiveProps) => {
       enableButton();
     }, disableTime);
   };
-  
+
   const onStayHandler = () => {
     setIsDisabled(true);
     props.onStay();
@@ -43,7 +43,7 @@ const Interactive = (props: interactiveProps) => {
       enableButton();
     }, disableTime);
   };
-  
+
   const onResetHandler = () => {
     setIsDisabled(true);
     props.onReset();

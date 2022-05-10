@@ -11,7 +11,7 @@ interface dealCardProps {
   firstCard: GameCard;
 }
 
-const DealerSpace = (props: dealCardProps) => {
+const DealerSpace = (props: dealCardProps): JSX.Element => {
   let sum: number | string;
   if (props.isDealersTurn) {
     sum = SumOfCards([props.firstCard, ...props.dealCard]);

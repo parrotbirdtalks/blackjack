@@ -10,7 +10,7 @@ import GameCard from "./cardSpace/GameCard";
 import DealCard from "./interactive/logic/DealCard";
 import SumOfCards from "./interactive/logic/SumOfCards";
 
-const GameSpace = () => {
+const GameSpace = (): JSX.Element => {
   const [cardPool, setCardPool] = useState<Array<GameCard>>(AllCards); // current deck of cards
   const [isGameStarted, setIsGameStart] = useState(false); //true after START GAME is selected; to make sure no unexpected rendering before game starts
   const [message, setMessage] = useState("Do you want to play a round?"); // instructions for player

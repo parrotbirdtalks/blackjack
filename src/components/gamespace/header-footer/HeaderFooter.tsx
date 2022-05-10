@@ -1,6 +1,6 @@
 import classes from "./HeaderFooter.module.css";
 
-export const Header = () => {
+export const Header = (): JSX.Element => {
   return (
     <div className={classes.title}>
       <h1>BLACKJACK</h1>
@@ -9,7 +9,7 @@ export const Header = () => {
   );
 };
 
-export const Footer = () => {
+export const Footer = (): JSX.Element => {
   return (
     <div className={classes.footer}>
       <h6 className={classes.someMessage}>Created with React-ts</h6>
