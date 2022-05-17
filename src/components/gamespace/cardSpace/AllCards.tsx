@@ -1,6 +1,6 @@
 import GameCard from "./GameCard";
 
-const allValues: string[] = [
+const allLabels: string[] = [
   "A",
   "2",
   "3",
@@ -15,25 +15,55 @@ const allValues: string[] = [
   "Q",
   "K",
 ];
-const allSuits: string[] = ["♠", "♥", "♣", "♦"];
-let AllCards: GameCard[] = [];
-for (let value in allValues) {
-  for (let suit in allSuits) {
-    let color: string;
-    if (allSuits[suit] === "♠" || allSuits[suit] === "♣") {
-      color = "black";
-    } else {
-      color = "red";
-    }
-    let newCard: GameCard = {
-      id: AllCards.length,
-      value: allValues[value],
-      suit: allSuits[suit],
-      color: color,
-    };
-    // console.log(AllCards);
-    AllCards.push(newCard);
+
+const allSuits: { suit: string; color: string }[] = [
+  { suit: "♠", color: "black" },
+  { suit: "♥", color: "red" },
+  { suit: "♣", color: "black" },
+  { suit: "♦", color: "red" },
+];
+
+const getValue = (value: string): number => {
+  switch (value) {
+    case "A":
+      return 1;
+    case "J":
+    case "Q":
+    case "K":
+      return 10;
+    default:
+      return parseInt(value);
   }
-}
+};
+
+const AllCards = (): GameCard[] => {
+  let cardArray: GameCard[] = [];
+  allSuits.map((suitAndColor) =>
+    allLabels.map((label) => {
+      cardArray.push({
+        label,
+        value: getValue(label),
+        suit: suitAndColor.suit,
+        color: suitAndColor.color,
+      });
+    })
+  );
+  return cardArray;
+};
+
+// const SetOfCards: GameCard[][] = allSuits.map((suitAndColor) =>
+//   allLabels.map((label) => ({
+//     label,
+//     value: getValue(label),
+//     suit: suitAndColor.suit,
+//     color: suitAndColor.color,
+//   }))
+// );
+// const AllCard: GameCard[] = [
+//   ...SetOfCards[0],
+//   ...SetOfCards[1],
+//   ...SetOfCards[2],
+//   ...SetOfCards[3],
+// ];
 
 export default AllCards;

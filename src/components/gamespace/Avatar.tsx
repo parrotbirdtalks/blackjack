@@ -1,23 +1,14 @@
 import classes from "./Avatar.module.css";
 import EntityInfo from "./EntityInfo";
 
-interface EntityProps {
-  displayInfo: EntityInfo;
-}
-
-const Avatar = (props: EntityProps): JSX.Element => {
+const Avatar = (props: { displayInfo: EntityInfo }): JSX.Element => {
   return (
     <div className={classes.avatar}>
-      {props.displayInfo.image === "zebra" ? (
-        <img src={require("../../assets/zebra_avatar.png")} alt="Dealer" />
-      ) : (
-        <img src={require("../../assets/chicken_avatar.png")} alt="Dealer" />
-      )}
-      {props.displayInfo.isDealer === true ? (
-        <h4>Dealer's Sum: </h4>
-      ) : (
-        <h4>Player's Sum: </h4>
-      )}
+      <img
+        src={require(`../../assets/${props.displayInfo.image}_avatar.png`)}
+        alt="Dealer"
+      />
+      <h4>{props.displayInfo.isDealer === true ? "Dealer" : "Player"}'s Sum: </h4>
       <h4>{props.displayInfo.totalSum}</h4>
     </div>
   );

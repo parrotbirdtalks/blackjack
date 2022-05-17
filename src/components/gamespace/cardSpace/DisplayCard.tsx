@@ -28,7 +28,7 @@ const DisplayCard = (props: CardProps):JSX.Element => {
     >
       {(timeToFlip && !props.toHide) || (props.toHide && props.isDealersTurn)? (
         <div className={classes.card}>
-          <div className={classes.cardNumber}>{props.card.value}</div>
+          <div className={classes.cardNumber}>{props.card.label}</div>
           <div className={classes.cardSymbol}>{props.card.suit}</div>
         </div>
       ) : (

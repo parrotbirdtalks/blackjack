@@ -1,11 +1,9 @@
 import { useState } from "react";
 import classes from "./interactive.module.css";
+import GameState from "../GameState"
 
 interface interactiveProps {
-  isGameStarted: boolean;
-  isPlayersTurn: boolean;
-  isDealersTurn: boolean;
-  isPendingReset: boolean;
+  gameState: GameState
   onStartGame: () => void;
   onHit: () => void;
   onStay: () => void;
@@ -54,22 +52,28 @@ const Interactive = (props: interactiveProps): JSX.Element => {
 
   return (
     <div className={classes.interactive}>
-      {!props.isGameStarted && !isDisabled && (
+      {!props.gameState.isGameStarted && !isDisabled && (
         <button className={classes.button34} onClick={onStartGameHandler}>
           Start Game
         </button>
       )}
-      {props.isPlayersTurn && props.isGameStarted && !isDisabled && (
-        <button className={classes.button34} onClick={onHitHandler}>
-          Hit
-        </button>
-      )}
-      {props.isPlayersTurn && props.isGameStarted && !isDisabled && (
-        <button className={classes.button34} onClick={onStayHandler}>
-          Stay
-        </button>
-      )}
-      {props.isPendingReset && !isDisabled && (
+      {!props.gameState.isDealersTurn &&
+        !props.gameState.isPendingReset &&
+        props.gameState.isGameStarted &&
+        !isDisabled && (
+          <button className={classes.button34} onClick={onHitHandler}>
+            Hit
+          </button>
+        )}
+      {!props.gameState.isDealersTurn &&
+        !props.gameState.isPendingReset &&
+        props.gameState.isGameStarted &&
+        !isDisabled && (
+          <button className={classes.button34} onClick={onStayHandler}>
+            Stay
+          </button>
+        )}
+      {props.gameState.isPendingReset && !isDisabled && (
         <button className={classes.button34} onClick={onResetHandler}>
           Reset Game
         </button>

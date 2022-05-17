@@ -1,3 +1,4 @@
+import React from "react";
 import classes from "./DealerSpace.module.css";
 import Avatar from "../Avatar";
 import EntityInfo from "../EntityInfo";
@@ -29,17 +30,16 @@ const DealerSpace = (props: dealCardProps): JSX.Element => {
   return (
     <div className={classes.dealerspace}>
       <div></div>
-
       <div className={classes.displaycard}>
-        {props.dealCard.length > 0 ? (
+        {props.dealCard.length > 0 && (
           <DisplayCard
             card={props.firstCard}
             toHide={true}
             isDealersTurn={props.isDealersTurn}
           />
-        ) : null}
+        )}
         {props.dealCard.map<JSX.Element>((card) => {
-          return <DisplayCard key={card.id} card={card} />;
+          return <DisplayCard key={card.label + card.suit} card={card} />;
         })}
       </div>
       <Avatar displayInfo={dealer} />

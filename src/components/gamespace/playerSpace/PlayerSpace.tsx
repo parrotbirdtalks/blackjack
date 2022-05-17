@@ -25,7 +25,7 @@ const PlayerSpace = (props: dealCardProps): JSX.Element => {
       <Avatar displayInfo={player} />
       <div className={classes.displaycard}>
         {props.dealCard.map<JSX.Element>((card) => {
-          return <DisplayCard key={card.id} card={card} />;
+          return <DisplayCard key={card.label + card.suit} card={card} />;
         })}
       </div>
       <div></div>

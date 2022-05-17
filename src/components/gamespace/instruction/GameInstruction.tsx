@@ -1,10 +1,6 @@
 import classes from "./GameInstruction.module.css";
 
-interface instructionsProps {
-  message: string;
-}
-
-const GameInstruction = (props: instructionsProps): JSX.Element => {
+const GameInstruction = (props: {message:string}): JSX.Element => {
   return (
     <div className={classes.gameinstruction}>
       <h3>{props.message}</h3>

@@ -1,6 +1,6 @@
 interface GameCard {
-  id: number
-  value: string;
+  label: string;
+  value: number;
   suit: string;
   color: string
 }

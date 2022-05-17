@@ -9,22 +9,29 @@ import AllCards from "./cardSpace/AllCards";
 import GameCard from "./cardSpace/GameCard";
 import DealCard from "./interactive/logic/DealCard";
 import SumOfCards from "./interactive/logic/SumOfCards";
+import GameState from "./GameState";
+import CardState from "./CardState";
 
 const GameSpace = (): JSX.Element => {
-  const [cardPool, setCardPool] = useState<Array<GameCard>>(AllCards); // current deck of cards
-  const [isGameStarted, setIsGameStart] = useState(false); //true after START GAME is selected; to make sure no unexpected rendering before game starts
+  const [cardPool, setCardPool] = useState<Array<GameCard>>(AllCards()); // current deck of cards
+  const [gameState, setGameState] = useState<GameState>({
+    isGameStarted: false, //true after STARTGAME; to make sure no unexpected rendering before game starts
+    isDealersTurn: false, //true when player gets blackjack or chose stay
+    isPendingReset: false, //true when game is over, pending initization of states
+  });
   const [message, setMessage] = useState("Do you want to play a round?"); // instructions for player
-  const [dealerFirstCard, setDealerFirstCard] = useState<GameCard>(); //used for making the first dealer card face down
-  const [dealersCards, setDealersCards] = useState<Array<GameCard>>([]); //dealer's cards
-  const [dealerSum, setDealerSum] = useState(0); //dealyer's card value total
-  const [playersCards, setPlayersCards] = useState<Array<GameCard>>([]); //player's cards
-  const [playerSum, setPlayerSum] = useState(0); //player's card value total
-  const [isDealersTurn, setIsDealersTurn] = useState(false); //true when player gets blackjack or chose stay
-  const [isPlayersTurn, setIsPlayersTurn] = useState(false); //true when player's turn to choose hit or stay
-  const [isPendingReset, setIsPendingReset] = useState(false); //tue when game is over, pending initization of states
+  const [dealersCardState, setDealersCardState] = useState<CardState>({
+    cards: [], //dealer's cards
+    sum: 0, //dealer's card value total
+    //dealerFirstCard: //used for making the first dealer card face down
+  });
+  const [playersCardState, setPlayersCardState] = useState<CardState>({
+    cards: [], //player's cards
+    sum: 0, //player's card value total
+  });
 
   const STARTGAME = (): void => {
-    setIsGameStart(true);
+    setGameState((prevState) => ({ ...prevState, isGameStarted: true }));
     let tempCardPool: GameCard[] = [...cardPool];
     let newPlayerCard1: GameCard = DealCard(tempCardPool);
     tempCardPool = tempCardPool.filter((card) => card !== newPlayerCard1);
@@ -34,41 +41,50 @@ const GameSpace = (): JSX.Element => {
     tempCardPool = tempCardPool.filter((card) => card !== newDealerCard1);
     let newDealerCard2: GameCard = DealCard(tempCardPool);
     tempCardPool = tempCardPool.filter((card) => card !== newDealerCard2);
-    setPlayersCards([...playersCards, newPlayerCard1, newPlayerCard2]);
-    setDealerFirstCard(newDealerCard1);
-    setDealersCards([...dealersCards, newDealerCard2]);
+    setPlayersCardState({
+      cards: [...playersCardState.cards, newPlayerCard1, newPlayerCard2],
+      sum: SumOfCards([newPlayerCard1, newPlayerCard2]),
+    });
+    setDealersCardState({
+      dealerFirstCard: newDealerCard1,
+      cards: [...dealersCardState.cards, newDealerCard2],
+      sum: SumOfCards([newDealerCard1, newDealerCard2]),
+    });
     setCardPool(tempCardPool);
-    setPlayerSum(SumOfCards([newPlayerCard1, newPlayerCard2]));
-    // setPlayerSum(21)
-    setDealerSum(SumOfCards([newDealerCard1, newDealerCard2]));
   };
 
   const HIT = (): void => {
-    setIsPlayersTurn(false);
     let tempCardPool: GameCard[] = [...cardPool];
     let newPlayerCard: GameCard = DealCard(tempCardPool);
     tempCardPool = tempCardPool.filter((card) => card !== newPlayerCard);
-    setPlayersCards([...playersCards, newPlayerCard]);
+    setPlayersCardState({
+      cards: [...playersCardState.cards, newPlayerCard],
+      sum: SumOfCards([...playersCardState.cards, newPlayerCard]),
+    });
     setCardPool(tempCardPool);
-    setPlayerSum(SumOfCards([...playersCards, newPlayerCard]));
     console.log(newPlayerCard);
   };
 
   const STAY = (): void => {
-    setIsDealersTurn(true);
-    setIsPlayersTurn(false);
+    setGameState((prevState) => ({ ...prevState, isDealersTurn: true }));
   };
 
   const RESET = (): void => {
     setCardPool(AllCards);
-    setIsGameStart(false);
+    setGameState({
+      isGameStarted: false,
+      isDealersTurn: false,
+      isPendingReset: false,
+    });
     setMessage("Do you want to play a round?");
-    setDealersCards([]);
-    setDealerSum(0);
-    setPlayersCards([]);
-    setPlayerSum(0);
-    setIsDealersTurn(false);
-    setIsPendingReset(false);
+    setDealersCardState({
+      cards: [],
+      sum: 0
+    })
+    setPlayersCardState({
+      cards: [],
+      sum: 0,
+    });
   };
 
   //Dealer's actions after player stay or blackjack
@@ -78,86 +94,96 @@ const GameSpace = (): JSX.Element => {
     let newDealerCard: GameCard = DealCard(tempCardPool);
     tempCardPool = tempCardPool.filter((card) => card !== newDealerCard);
     setTimeout(() => {
-      setDealersCards([...dealersCards, newDealerCard]);
+      setDealersCardState((prevState) => ({
+        ...prevState,
+        cards: [...dealersCardState.cards, newDealerCard],
+        sum: SumOfCards([
+          ...dealersCardState.cards,
+          dealersCardState.dealerFirstCard!,
+          newDealerCard,
+        ]),
+      }));
       setCardPool(tempCardPool);
-      setDealerSum(
-        SumOfCards([...dealersCards, dealerFirstCard!, newDealerCard])
-      );
     }, 1000);
     console.log(newDealerCard);
   };
 
   //Card logic for player
   useEffect(() => {
-    if (isGameStarted) {
-      if (playerSum === 21) {
+    if (gameState.isGameStarted) {
+      if (playersCardState.sum === 21) {
         setTimeout(() => {
           setMessage("Blackjack!");
-          setIsDealersTurn(true);
+          setGameState((prevState) => ({ ...prevState, isDealersTurn: true }));
         }, 750);
-      } else if (playerSum > 21) {
+        // setTimeout(() => {
+        //   setIsDealersTurn(true);
+        // }, 1250);
+      } else if (playersCardState.sum > 21) {
         setTimeout(() => {
           setMessage("Bust! Game Over");
         }, 750);
-        setIsPendingReset(true);
+        setGameState((prevState) => ({ ...prevState, isPendingReset: true }));
       } else {
-        setIsPlayersTurn(true);
         setTimeout(() => {
           setMessage("Do you want to hit or stay?");
         }, 750);
       }
     }
-  }, [playerSum]);
+  }, [playersCardState.sum]);
 
   //Card logic for dealer
   useEffect(() => {
-    if (isDealersTurn) {
-      if (dealerSum > 21) {
+    if (gameState.isDealersTurn) {
+      if (dealersCardState.sum > 21) {
         setTimeout(() => {
           setMessage("You Win!");
-          setIsPendingReset(true);
+          setGameState((prevState) => ({ ...prevState, isPendingReset: true }));
         }, 1000);
-      } else if (dealerSum === playerSum && dealerSum > 17) {
+      } else if (
+        dealersCardState.sum === playersCardState.sum &&
+        dealersCardState.sum > 17
+      ) {
         setTimeout(() => {
           setMessage("Draw!");
-          setIsPendingReset(true);
+          setGameState((prevState) => ({ ...prevState, isPendingReset: true }));
         }, 1000);
-      } else if (dealerSum > playerSum) {
+      } else if (dealersCardState.sum > playersCardState.sum) {
         setTimeout(() => {
           setMessage("You Lose!");
-          setIsPendingReset(true);
+          setGameState((prevState) => ({ ...prevState, isPendingReset: true }));
         }, 1000);
-      } else if (dealerSum < playerSum && dealerSum < 17) {
+      } else if (
+        dealersCardState.sum < playersCardState.sum &&
+        dealersCardState.sum < 17
+      ) {
         dealerAction();
       } else {
         setTimeout(() => {
           setMessage("You Win!");
-          setIsPendingReset(true);
+          setGameState((prevState) => ({ ...prevState, isPendingReset: true }));
         }, 1000);
       }
     }
-  }, [dealerSum, isDealersTurn]);
+  }, [dealersCardState.sum, gameState.isDealersTurn]);
 
-  console.log("playerSum: " + playerSum);
-  console.log(playersCards);
-  console.log("dealerSum: " + dealerSum);
-  console.log(dealersCards);
+  console.log("playerSum: " + playersCardState.sum);
+  console.log(playersCardState.cards);
+  console.log("dealerSum: " + dealersCardState.sum);
+  console.log(dealersCardState.cards);
 
   return (
     <div className={classes.gamespace}>
       <Header />
       <GameInstruction message={message} />
       <DealerSpace
-        dealCard={dealersCards}
-        isDealersTurn={isDealersTurn}
-        firstCard={dealerFirstCard!}
+        dealCard={dealersCardState.cards}
+        isDealersTurn={gameState.isDealersTurn}
+        firstCard={dealersCardState.dealerFirstCard!}
       />
-      <PlayerSpace dealCard={playersCards} />
+      <PlayerSpace dealCard={playersCardState.cards} />
       <Interactive
-        isGameStarted={isGameStarted}
-        isPlayersTurn={isPlayersTurn}
-        isDealersTurn={isDealersTurn}
-        isPendingReset={isPendingReset}
+        gameState={gameState}
         onStartGame={STARTGAME}
         onHit={HIT}
         onStay={STAY}
